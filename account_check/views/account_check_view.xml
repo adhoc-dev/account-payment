@@ -96,7 +96,11 @@
                                 <group>
                                     <field name="date"/>
                                     <field name="operation"/>
-                                    <field name="origin"/>
+                                    <label for="origin"/>
+                                    <div>
+                                        <field name="origin" attrs="{'readonly': [('origin', '!=', False)]}" class="oe_inline"/>
+                                        <button name="unlink_origin" type="object" class="oe_inline oe_link" attrs="{'invisible': [('origin', '=', False)]}" confirm="Esto va a desvincular este registro de esta operación (sin borrarlo). Esto no suele ser necesario ya que las operaciones se cancelan y borran automáticamente desde los documentos que las generan (por ej. una transferencia o un pago). Esta seguro que desea continuar?" icon="fa-chain-broken"/>
+                                    </div>
                                     <field name="partner_id"/>
                                     <field name="notes"/>
                                 </group>

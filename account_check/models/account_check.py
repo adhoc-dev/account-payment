@@ -73,6 +73,10 @@ class AccountCheckOperation(models.Model):
     )
 
     @api.multi
+    def unlink_origin(self):
+        self.write({'origin': False})
+
+    @api.multi
     def unlink(self):
         for rec in self:
             if rec.origin:
