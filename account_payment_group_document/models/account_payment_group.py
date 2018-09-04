@@ -183,6 +183,11 @@ class AccountPaymentGroup(models.Model):
                 'document_number': rec.document_number,
                 'receiptbook_id': rec.receiptbook_id.id,
             })
+            if not rec.receiptbook_id.mail_template_id:
+                continue
+            rec.message_post_with_template(
+                rec.receiptbook_id.mail_template_id.id,
+            )
         return super(AccountPaymentGroup, self).post()
 
     @api.multi
