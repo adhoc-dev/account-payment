@@ -14,7 +14,7 @@
 Withholdings on Payments
 ========================
 
-TODO
+Modulo base para manejo de retenciones en pagos
 
 Installation
 ============
