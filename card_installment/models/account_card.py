@@ -23,16 +23,22 @@ class AccountCard(models.Model):
         string='company',
         default=lambda self: self.env.company.id
     )
+    bin = fields.Text()
     active = fields.Boolean(
         string='Active',
         default=True
     )
 
+    def parse_bin_expression(self):
+        self.ensure_one()
+        return bin.splitlines()
+        
+        
     def map_card_values(self):
-
         self.ensure_one()
         return {
             'name': self.name,
             'id': self.id,
             'installments': [],
+            'bin_expressions': self.parse_bin_expression()
             }

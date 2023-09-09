@@ -45,6 +45,10 @@
 							</tree>
 						</field>
 					</group>
+					<group name="bin_expressions" attrs="{'invisible':True}" col="4" >
+						<field name="bin"/>
+					</group>
+
 				</sheet>
 			</form>
 		</field>
