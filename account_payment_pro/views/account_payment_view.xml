@@ -5,9 +5,9 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_supplier_payment_tree"/>
         <field name="arch" type="xml">
-            <header>
+            <button name="action_post" position="before">
                 <button name="action_approve" string="Approve" groups="account_payment_pro.account_confirm_payment" type="object"/>
-            </header>
+            </button>
             <field name="state" position="after">
                 <field name="is_approved" optional="hide"/>
             </field>
