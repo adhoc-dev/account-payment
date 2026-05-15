@@ -34,7 +34,9 @@ class PaymentPortal(payment_portal.PaymentPortal):
         invoice_date = invoice.invoice_date
 
         # Initial selection by due_date
-        selected_invoices = request.env['account.move'].search(self._get_selected_invoices_domain(due_date=due_date))
+        selected_invoices = request.env['account.move'].search(
+            self._get_selected_invoices_domain(due_date=due_date, partner_id=invoice.partner_id.id)
+        )
 
         # If more than one with the due_date, filter by invoice_date <= invoice_date
         if selected_invoices.mapped('invoice_date_due').count(due_date) > 1:
@@ -182,9 +184,12 @@ class PaymentPortal(payment_portal.PaymentPortal):
         partner = request.env.user.partner_id
 
         invoice_id = int(kwargs.get('invoice_id'))
-        due_date = request.env['account.move'].browse(invoice_id).invoice_date_due
+        invoice = request.env['account.move'].browse(invoice_id)
+        due_date = invoice.invoice_date_due
 
-        selected_invoices = request.env['account.move'].search(self._get_selected_invoices_domain(due_date))
+        selected_invoices = request.env['account.move'].search(
+            self._get_selected_invoices_domain(due_date, partner_id=invoice.partner_id.id)
+        )
         currencies = selected_invoices.mapped('currency_id')
         if not all(currency == currencies[0] for currency in currencies):
             raise ValidationError(_("Impossible to pay all the selected invoices if they don't share the same currency."))
