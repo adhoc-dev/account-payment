@@ -25,7 +25,10 @@ class PaymentPortal(payment_portal.PaymentPortal):
         except (AccessError, MissingError):
             return request.redirect('/my')
 
-        invoice_id = int(kw.get('invoice_id'))
+        invoice_id = kw.get('invoice_id')
+        if not invoice_id:
+            return request.redirect('/my/invoices')
+        invoice_id = int(invoice_id)
         invoice = request.env['account.move'].browse(invoice_id)
         due_date = invoice.invoice_date_due
         invoice_date = invoice.invoice_date
@@ -48,7 +51,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
 
         values = self._selected_invoices_get_page_view_values(selected_invoices, **kw)
         return request.render("account_payment_multi.portal_selected_invoices_page", values) \
-            if 'payment' in values else request.redirect('/my/invoices/selected')
+            if 'payment' in values else request.redirect('/my/invoices')
 
     def _selected_invoices_get_page_view_values(self, selected_invoices, **kwargs):
         values = {'page_name': 'selected_invoices'}
