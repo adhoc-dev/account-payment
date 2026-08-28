@@ -92,6 +92,8 @@ class AccountMove(models.Model):
         return res
 
     def _search_default_journal(self):
-        if self.env.context.get("default_company_id"):
-            self.env.company = self.env["res.company"].browse(self.env.context.get("default_company_id"))
+        default_company_id = self.env.context.get("default_company_id")
+        if default_company_id:
+            company = self.env["res.company"].browse(default_company_id)
+            return super(AccountMove, self.with_company(company))._search_default_journal()
         return super()._search_default_journal()

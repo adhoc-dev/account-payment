@@ -153,7 +153,7 @@ class AccountPayment(models.Model):
         # proveniente de ir.default (valores predeterminados del usuario) y perteneciente
         # a otra compañía dispare el precompute _compute_company_id y sobreescriba la
         # compañía correcta del pago por la compañía principal del entorno.
-        default_company_id = self._context.get("default_company_id")
+        default_company_id = self.env.context.get("default_company_id")
         if default_company_id and "journal_id" in res:
             journal = self.env["account.journal"].browse(res["journal_id"])
             if journal.company_id.id != default_company_id:
@@ -164,7 +164,7 @@ class AccountPayment(models.Model):
         if "previous_currency_id" in fields_list and "previous_currency_id" not in res:
             currency_id = res.get("currency_id")
             if not currency_id:
-                journal_id = res.get("journal_id") or self._context.get("default_journal_id")
+                journal_id = res.get("journal_id") or self.env.context.get("default_journal_id")
                 if journal_id:
                     journal = self.env["account.journal"].browse(journal_id)
                     currency_id = (journal.currency_id or journal.company_id.currency_id).id
@@ -694,7 +694,7 @@ class AccountPayment(models.Model):
     def _compute_to_pay_move_lines(self):
         # TODO ?
         # # if payment group is being created from a payment we dont want to compute to_pay_move_lines
-        # if self._context.get('created_automatically'):
+        # if self.env.context.get('created_automatically'):
         #     return
         # Se recomputan las lienas solo si la deuda que esta seleccionada solo si
         # cambio el partner, compania o partner_type
@@ -703,7 +703,7 @@ class AccountPayment(models.Model):
 
         with_payment_pro = self._get_filter_payments(records, ["direct_debit_mandate_id", "pos_session_id"])
 
-        if internal_transfers or not self._context.get("pay_now"):
+        if internal_transfers or not self.env.context.get("pay_now"):
             ((internal_transfers or self) - with_payment_pro).to_pay_move_line_ids = [Command.clear()]
         for rec in with_payment_pro:
             rec._add_all()
