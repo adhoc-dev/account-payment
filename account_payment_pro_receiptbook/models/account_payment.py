@@ -9,7 +9,7 @@ class AccountPayment(models.Model):
         "account.payment.receiptbook",
         "ReceiptBook",
         readonly=True,
-        auto_join=True,
+        bypass_search_access=True,
         check_company=True,
         compute="_compute_receiptbook",
         store=True,
@@ -64,8 +64,8 @@ class AccountPayment(models.Model):
             if rec.is_internal_transfer or not rec.company_id.use_receiptbook:
                 rec.receiptbook_id = False
             elif not rec.receiptbook_id or rec.receiptbook_id.company_id != rec.company_id:
-                partner_type = rec.partner_type or self._context.get(
-                    "partner_type", self._context.get("default_partner_type", False)
+                partner_type = rec.partner_type or self.env.context.get(
+                    "partner_type", self.env.context.get("default_partner_type", False)
                 )
                 receiptbook = self.env["account.payment.receiptbook"].search(
                     [

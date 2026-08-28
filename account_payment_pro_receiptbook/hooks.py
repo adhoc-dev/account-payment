@@ -1,4 +1,4 @@
-from odoo.addons.account.wizard.account_resequence import ReSequenceWizard
+from odoo.addons.account.wizard.account_resequence import AccountResequenceWizard
 
 
 def _revert_method(cls, name):
@@ -10,4 +10,4 @@ def _revert_method(cls, name):
 
 
 def uninstall_hook(env):
-    _revert_method(ReSequenceWizard, "default_get")
+    _revert_method(AccountResequenceWizard, "default_get")

@@ -31,7 +31,7 @@ class AccountMove(models.Model):
 
     @api.model
     def _search(self, domain, *args, **kwargs):
-        if self._context.get("without_receiptbook_id"):
+        if self.env.context.get("without_receiptbook_id"):
             domain += [("receiptbook_id", "=", False)]
         return super()._search(domain, *args, **kwargs)
 
